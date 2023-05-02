@@ -16,19 +16,21 @@ class App extends React.Component {
     this.state = {
       // On veut utilisé des tâches du fichier src/data/tasks.js comme tâche initiales
       tasks: tasksList,
+      inputTaskLabel: '',
     };
   }
 
   render() {
+    const { tasks, inputTaskLabel } = this.state;
     // On calcul le nombre de tâche non réalisées
-    const notDoneTasks = tasksList.filter((item) => item.done === false);
+    const notDoneTasks = tasks.filter((item) => item.done === false);
     const nbTasksNotDone = notDoneTasks.length;
 
     return (
       <div className="app">
-        <Form />
+        <Form inputTaskLabel={inputTaskLabel} />
         <Counter nbTasks={nbTasksNotDone} />
-        <Tasks tasks={tasksList} />
+        <Tasks tasks={tasks} />
       </div>
     );
   }
