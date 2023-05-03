@@ -13,11 +13,21 @@ import { Component } from 'react';
 class App extends React.Component {
   constructor(props) {
     super(props);
+    // on oublie pas de binder le contexte ( représenter par this ) pour qu'il soit utilisable
+    // dans un autre context
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.state = {
       // On veut utilisé des tâches du fichier src/data/tasks.js comme tâche initiales
       tasks: tasksList,
       inputTaskLabel: '',
     };
+  }
+
+  // le seul rôle est de modifier une info dasn le state
+  handleInputChange(newValue) {
+    this.setState({
+      inputTaskLabel: newValue,
+    });
   }
 
   render() {
@@ -28,7 +38,7 @@ class App extends React.Component {
 
     return (
       <div className="app">
-        <Form inputTaskLabel={inputTaskLabel} />
+        <Form inputTaskLabel={inputTaskLabel} setValue={this.handleInputChange} />
         <Counter nbTasks={nbTasksNotDone} />
         <Tasks tasks={tasks} />
       </div>
