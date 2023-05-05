@@ -16,6 +16,7 @@ class App extends React.Component {
     // dans un autre context
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleForSubmit = this.handleForSubmit.bind(this);
+    this.toggleTaskDone = this.toggleTaskDone.bind(this);
     this.state = {
       // On veut utilisé des tâches du fichier src/data/tasks.js comme tâche initiales
       tasks: tasksList,
@@ -32,7 +33,7 @@ class App extends React.Component {
 
   // fonction dont le rôle est d'ajouter une tâche dans le tableau du state
   handleForSubmit() {
-    const { inputTaskLabel, tasks } = this.state
+    const { inputTaskLabel, tasks } = this.state;
     // on crée un tableau contenant les ids de toutes no tâches
     const idsTasks = tasks.map((item) => item.id);
     // maintenant je veux l'id le plus haut, Math.max accepte un nombre indéfini d'argument
@@ -57,9 +58,42 @@ class App extends React.Component {
     // on envoie au nouveau state la copie du tableau qui contient la nouvelle tâche
     this.setState({
       tasks: tasksCopy,
+      inputTaskLabel: '',
     });
 
     // comme ça, react mettra à jour correctement l'UI lors de sa phase de reconscilliation
+  }
+
+  toggleTaskDone(taskId) {
+    // console.log('on m\'a appellé?');
+
+    const { tasks } = this.state;
+
+    const newTasks = tasks.map(
+      (task) => {
+        if (task.id !== taskId) {
+          return task;
+        }
+        // Si c'est la tâche qui nous intéresse
+        // on en fait une copie et on inverse la valeur de la propriété de done
+        // return {
+        //   id: task.id,
+        //   label: task.label,
+        //   done: !task.done,
+        // };
+
+        // autre façon de faire, plus rapide
+        return {
+          // on crée un nouvelle objet
+          // on copie le talbeau
+          ...task,
+          // et on modifie seulement les propriétées qui nous intéresse
+          done: !task.done,
+        };
+      },
+    );
+
+    this.setState({ tasks: newTasks });
   }
 
   render() {
@@ -76,7 +110,7 @@ class App extends React.Component {
           addTask={this.handleForSubmit}
         />
         <Counter nbTasks={nbTasksNotDone} />
-        <Tasks tasks={tasks} />
+        <Tasks tasks={tasks} onDoneChange={this.toggleTaskDone} />
       </div>
     );
   }

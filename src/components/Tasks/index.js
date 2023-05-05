@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 import './tasks.scss';
 
 // == Composant
-function Tasks({ tasks }) {
+function Tasks({ tasks, onDoneChange }) {
+  function handleDoneChange(id) {
+    onDoneChange(id);
+  }
+
   return (
     <ul className="list">
 
@@ -24,7 +28,14 @@ function Tasks({ tasks }) {
         return (
           <li key={idItem}>
             <label htmlFor={idItem} className={cssClass}>
-              <input id={idItem} type="checkbox" checked={item.done} />
+              <input
+                id={idItem}
+                type="checkbox"
+                checked={item.done}
+                onChange={() => {
+                  handleDoneChange(item.id);
+                }}
+              />
               {item.label}
             </label>
           </li>
@@ -42,6 +53,7 @@ Tasks.propTypes= {
       done: PropTypes.bool.isRequired,
     }).isRequired,
   ).isRequired,
+  onDoneChange: PropTypes.func.isRequired,
 }
 // == Export
 export default Tasks;
