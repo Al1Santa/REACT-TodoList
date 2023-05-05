@@ -35,7 +35,7 @@ class App extends React.Component {
     const { inputTaskLabel, tasks } = this.state
     // on crée un tableau contenant les ids de toutes no tâches
     const idsTasks = tasks.map((item) => item.id);
-    // maintenant je veux l'id le plus haut
+    // maintenant je veux l'id le plus haut, Math.max accepte un nombre indéfini d'argument
     const idMax = Math.max(...idsTasks);
     // maintenant je veux l'incrémenter
     const newId = idMax + 1;
@@ -48,7 +48,18 @@ class App extends React.Component {
     };
 
     // Ajouter la tâche au state
-    console.log(newTask);
+    // crée une copie du tableau
+    const tasksCopy = [...tasks];
+
+    // modifier la copie du tableau en ajoutant la nouvelle tâche
+    tasksCopy.push(newTask);
+
+    // on envoie au nouveau state la copie du tableau qui contient la nouvelle tâche
+    this.setState({
+      tasks: tasksCopy,
+    });
+
+    // comme ça, react mettra à jour correctement l'UI lors de sa phase de reconscilliation
   }
 
   render() {
