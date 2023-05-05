@@ -102,6 +102,14 @@ class App extends React.Component {
     const notDoneTasks = tasks.filter((item) => item.done === false);
     const nbTasksNotDone = notDoneTasks.length;
 
+    // On a déjà filtré les tâches notDoneTasks
+    // on fait la même pour les tâches done
+    const doneTasks = tasks.filter((item) => item.done === true);
+
+    // on prépare la liste confiée au composant pour affichage
+    // en mettant bout à bout les éléments des deux tableaux
+    const orderedTasks = [...notDoneTasks, ...doneTasks];
+
     return (
       <div className="app">
         <Form
@@ -110,7 +118,7 @@ class App extends React.Component {
           addTask={this.handleForSubmit}
         />
         <Counter nbTasks={nbTasksNotDone} />
-        <Tasks tasks={tasks} onDoneChange={this.toggleTaskDone} />
+        <Tasks tasks={orderedTasks} onDoneChange={this.toggleTaskDone} />
       </div>
     );
   }
