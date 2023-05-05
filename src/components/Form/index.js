@@ -4,9 +4,15 @@ import PropTypes from 'prop-types';
 import './form.scss';
 
 // == Composant
-function Form({ inputTaskLabel, setValue }) {
+function Form({ inputTaskLabel, setValue, addTask }) {
   return (
-    <form className="form">
+    <form
+      className="form"
+      onSubmit={(event) => {
+        event.preventDefault();
+        addTask();
+      }}
+    >
       <input
         type="text"
         className="form-item"
@@ -19,10 +25,11 @@ function Form({ inputTaskLabel, setValue }) {
     </form>
   );
 }
-// episoe 7 numero 3 14 minutes
+
 Form.propTypes = {
   inputTaskLabel: PropTypes.string.isRequired,
   setValue: PropTypes.func.isRequired,
+  addTask: PropTypes.func.isRequired,
 };
 // == Export
 export default Form;

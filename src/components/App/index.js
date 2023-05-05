@@ -1,4 +1,4 @@
-// == Import npm 
+// == Import npm
 import React from 'react';
 
 // == Import
@@ -7,7 +7,6 @@ import Form from '../Form';
 import Counter from '../Counter';
 import Tasks from '../Tasks';
 import './app.scss';
-import { Component } from 'react';
 
 // == Composant
 class App extends React.Component {
@@ -16,6 +15,7 @@ class App extends React.Component {
     // on oublie pas de binder le contexte ( représenter par this ) pour qu'il soit utilisable
     // dans un autre context
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleForSubmit = this.handleForSubmit.bind(this);
     this.state = {
       // On veut utilisé des tâches du fichier src/data/tasks.js comme tâche initiales
       tasks: tasksList,
@@ -30,6 +30,27 @@ class App extends React.Component {
     });
   }
 
+  // fonction dont le rôle est d'ajouter une tâche dans le tableau du state
+  handleForSubmit() {
+    const { inputTaskLabel, tasks } = this.state
+    // on crée un tableau contenant les ids de toutes no tâches
+    const idsTasks = tasks.map((item) => item.id);
+    // maintenant je veux l'id le plus haut
+    const idMax = Math.max(...idsTasks);
+    // maintenant je veux l'incrémenter
+    const newId = idMax + 1;
+
+    // construire la nouvelle tache
+    const newTask = {
+      id: newId,
+      done: false,
+      label: inputTaskLabel,
+    };
+
+    // Ajouter la tâche au state
+    console.log(newTask);
+  }
+
   render() {
     const { tasks, inputTaskLabel } = this.state;
     // On calcul le nombre de tâche non réalisées
@@ -38,7 +59,11 @@ class App extends React.Component {
 
     return (
       <div className="app">
-        <Form inputTaskLabel={inputTaskLabel} setValue={this.handleInputChange} />
+        <Form
+          inputTaskLabel={inputTaskLabel}
+          setValue={this.handleInputChange}
+          addTask={this.handleForSubmit}
+        />
         <Counter nbTasks={nbTasksNotDone} />
         <Tasks tasks={tasks} />
       </div>
